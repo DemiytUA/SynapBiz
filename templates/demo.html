@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <!--  Bootstrap  -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <title>SynapBiz Web Demo</title>
+</head>
+<body>
+    <section class="demo">
+        <div id="particles-js"></div>
+
+
+        <h1 class="demo__title">Net Profit Calculator</h1>
+
+        <div class="set_calculator">
+            <button class="set_calculator_btn1" onclick="showCalculator('general')">General Calculator</button>
+            <button class="set_calculator_btn2" onclick="showCalculator('product')">Product Sales Profit Calculator</button>
+        </div>
+
+        <!-- General Calculator -->
+        <div class="calc_contailer" id="general-calculator" id="particles-js">
+            <h3 class="demo__calc_name">General Net Profit Calculator</h3>
+
+            <div class="input_group">
+                <label for="revenue">Revenue:</label>
+                <input type="number" id="revenue">
+            </div>
+
+            <div class="input_group">
+                <label for="cost">Cost of Goods Sold:</label>
+                <input type="number" id="cost">
+            </div>
+
+            <div class="input_group">
+                <label for="expenses">Operating Expenses:</label>
+                <input type="number" id="expenses">
+            </div>
+
+            <div class="input_group">
+                <label for="tax">Tax Rate (%):</label>
+                <input type="number" id="tax">
+            </div>
+
+            <button class="calc_btn" onclick="calculateGeneralProfit()">Calculate</button>
+
+            <h5 class="output">Net Profit: <span id="general-result">0</span></h5>
+        </div>
+
+        <!-- Product Sales Profit Calculator -->
+        <div class="calc_contailer" id="product-calculator" style="display: none;">
+            <h3 class="demo__calc_name">Product Sales Net Profit Calculator</h3>
+
+            <div class="input_group">
+                <label for="price">Unit Price:</label>
+                <input type="number" id="price">
+            </div>
+
+            <div class="input_group">
+                <label for="quantity">Quantity Sold:</label>
+                <input type="number" id="quantity">
+            </div>
+
+            <div class="input_group">
+                <label for="unit-cost">Unit Cost:</label>
+                <input type="number" id="unit-cost">
+            </div>
+
+            <div class="input_group">
+                <label for="other-expenses">Operating Expenses:</label>
+                <input type="number" id="other-expenses">
+            </div>
+
+            <div class="input_group">
+                <label for="product-tax">Tax Rate (%):</label>
+                <input type="number" id="product-tax">
+            </div>
+
+            <button class="calc_btn" onclick="calculateProductProfit()">Calculate</button>
+
+            <h5 class="output">Net Profit: <span id="product-result">0</span></h5>
+        </div>
+    </section>
+    
+
+    <script>
+        function showCalculator(type) {
+            if (type === 'general') {
+                document.getElementById('general-calculator').style.display = 'grid';
+                document.getElementById('product-calculator').style.display = 'none';
+            } else {
+                document.getElementById('general-calculator').style.display = 'none';
+                document.getElementById('product-calculator').style.display = 'grid';
+            }
+        }
+
+        function calculateGeneralProfit() {
+            let revenue = parseFloat(document.getElementById('revenue').value) || 0;
+            let cost = parseFloat(document.getElementById('cost').value) || 0;
+            let expenses = parseFloat(document.getElementById('expenses').value) || 0;
+            let taxRate = parseFloat(document.getElementById('tax').value) || 0;
+
+            let profitBeforeTax = revenue - cost - expenses;
+
+            // If profit is negative, taxes are not considered
+            if (profitBeforeTax < 0) {
+                taxRate = 0;
+            }
+
+            let taxAmount = (profitBeforeTax * taxRate) / 100;
+            let netProfit = profitBeforeTax - taxAmount;
+
+            document.getElementById('general-result').innerText = netProfit.toFixed(2);
+        }
+
+        function calculateProductProfit() {
+            let price = parseFloat(document.getElementById('price').value) || 0;
+            let quantity = parseFloat(document.getElementById('quantity').value) || 0;
+            let unitCost = parseFloat(document.getElementById('unit-cost').value) || 0;
+            let otherExpenses = parseFloat(document.getElementById('other-expenses').value) || 0;
+            let taxRate = parseFloat(document.getElementById('product-tax').value) || 0;
+
+            let revenue = price * quantity;
+            let totalCost = unitCost * quantity;
+            let profitBeforeTax = revenue - totalCost - otherExpenses;
+
+            // If profit is negative, taxes are not considered
+            if (profitBeforeTax < 0) {
+                taxRate = 0;
+            }
+
+            let taxAmount = (profitBeforeTax * taxRate) / 100;
+            let netProfit = profitBeforeTax - taxAmount;
+
+            document.getElementById('product-result').innerText = netProfit.toFixed(2);
+        }
+
+
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 20,
+                    "density": { "enable": true, "value_area": 400 }
+                },
+                "color": { "value": "#333333" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.7, "random": true },
+                "size": {
+                    "value": 4, 
+                    "random": true
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 2.5,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out"
+                }
+            }
+        });
+
+
+    </script>
+</body>
+</html>

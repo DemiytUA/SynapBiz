@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>SynapBiz</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&display=swap">
+
+    <!--  Bootstrap  -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <h1 class="header__title">SynapBiz</h1>
+        <nav class="header__nav">
+            <a href="#download" class="header__link">Download</a>
+            <a href="#about_app" class="header__link">About the program</a>
+            <a href="#contact_us" class="header__link">Contact us</a>
+        </nav>
+    </header>
+
+    <section class="intro">
+        <div class="intro__container">
+            <h1 class="intro__title">SynapBiz</h1>
+            <p class="intro__slogan">Your personal assistant</p>
+        </div>
+    </section>
+
+    <section class="dl_section" id="download">
+        <div class="dl_section__dl">
+            <a class="dl_button" href="{{ url_for('static', filename='app/PCBuilder.apk') }}" download>
+                <span class="material-symbols-outlined">android</span> Download app
+            </a>
+
+            <a class="web_demo_btn" href="{{ url_for('demo') }}" >
+                <span class="material-symbols-outlined">web</span> Try demo in browser
+            </a>
+
+
+            <div class="app_description">
+                <h3>Application for Android</h3>
+                <p>SynapBiz Helper is a convenient app for managing business tasks. It helps track cash flow, organize tasks, analyze performance, and streamline operations, making business management easier without unnecessary complexity.</p>
+            </div>
+        </div>
+
+        <div class="dl_section__logo">
+            <img src="{{ url_for('static', filename='images/logo.jpg') }}" class="app_logo" loading="lazy" alt="SynapBiz Logo">
+        </div>
+    </section>
+
+    <section class="about_app" id="about_app">
+        <div class="about_app__phone-img">
+            <a href="images/code.jpg" download style="display: flex; justify-content: center; align-items: center; width: 60%;">
+                <img class="phone-img" src="{{ url_for('static', filename='images/code.jpg') }}" loading="lazy" alt="App Screenshot">
+            </a>
+        </div>
+
+        <div class="about_app__description">
+            <h1 class="description__title">About the program</h1>
+            <div class="description__text">
+                <p>SynapBiz Helper is an intuitive app designed to simplify business management without unnecessary complexity.</p>
+                
+                <h3>Key features:</h3>
+                <ul>
+                    <li>Cash flow tracking – monitor income, expenses, and overall financial health.</li>
+                    <li>Task management – plan, assign, and track tasks efficiently.</li>
+                    <li>Performance analysis – gain insights with reports and analytics.</li>
+                    <li>Process optimization – automate workflows for better efficiency.</li>
+                </ul>
+
+                <h3>Why choose SynapBiz Helper?</h3>
+                <ul>
+                    <li>User-friendly and easy to navigate.</li>
+                    <li>Perfect for small and medium-sized businesses.</li>
+                    <li>Helps streamline daily operations.</li>
+                </ul>
+            </div>
+
+            <form class="subscibe_to_updates" method="post">
+                <input type="email" name="email" placeholder="Your email address" required>
+                <button class="btn_submit" type="submit">Subscribe to updates</button>
+            </form>
+
+            <div class="message_arleady">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    {% for category, message in messages %}
+                      <p style="color: {% if category == 'success' %}green{% else %}red{% endif %};">
+                        {{ message }}
+                      </p>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </section>
+
+    <footer class="contact_us" id="contact_us">
+        <h2 class="contact_us__text">Contact us</h2>
+        <div class="contact_us__contact">
+            <div class="contact">
+                <span class="material-symbols-outlined contact_icon">mail</span>
+                <p id="contact_email" onclick="copyText('contact_email')">artiksartar@gmail.com</p>
+            </div>
+            <div class="contact">
+                <span class="material-symbols-outlined contact_icon">phone_enabled</span>
+                <p id="contact_phone" onclick="copyText('contact_phone')">+380 68 666 0975</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <div id="success-message" class="success-message">Copied</div>
+
+
+
+    <script>
+        function copyText(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text)
+                .then(() => showSuccessMessage());
+        }
+
+        function showSuccessMessage() {
+            const successMessage = document.getElementById('success-message');
+
+            successMessage.style.transition = 'none';
+            successMessage.style.opacity = '1';
+
+            void successMessage.offsetWidth;
+
+            setTimeout(() => {
+                successMessage.style.transition = 'opacity 2s ease';
+                successMessage.style.opacity = '0';
+            }, 500);
+        }
+    </script>
+
+</body>
+</html>
